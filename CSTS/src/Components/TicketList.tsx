@@ -9,9 +9,10 @@ import TicketStatusDropdown from "./TicketStatusDropdown";
 import DeletedTicket from "./DeletedTicket";
 import ActiveTicket from "./ActiveTicket";
 import { RiResetRightFill } from "react-icons/ri";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegAddressCard, FaRegUserCircle } from "react-icons/fa";
 import type { User } from "./Pages/SignUp";
 import UserDetails from "./UserDetails";
+import { LuTableProperties } from "react-icons/lu";
 
 const TicketList: React.FC = () => {
   const [ticketData, setTicketData] = useState<Input[]>([]);
@@ -24,6 +25,7 @@ const TicketList: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [userId, setUserId] = useState<string | null>(null);
+  const [view, setView] = useState(false);
 
   useEffect(() => {
     const { usrId } = location.state || {};
@@ -115,6 +117,7 @@ const TicketList: React.FC = () => {
     setSelectPriority("");
     setTicketStatus("Active Ticket");
     setFilterSearch("");
+    setView(false);
   };
 
   const userData: User[] = JSON.parse(localStorage.getItem("userData") || "[]");
@@ -135,7 +138,7 @@ const TicketList: React.FC = () => {
             }}
             title="Add Ticket"
           >
-            <MdAddCard className="w-[40px] md:w-[60px] h-[40px]" />
+            <MdAddCard className="w-[40px] md:w-[60px] h-[40px] text-gray-700" />
           </button>
           <button
             className="rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-105 hover:delay-300 "
@@ -145,14 +148,14 @@ const TicketList: React.FC = () => {
             }}
             title="User Details"
           >
-            <FaRegUserCircle className="h-[35px] w-[40px] md:w-[60px]" />
+            <FaRegUserCircle className="h-[35px] w-[40px] md:w-[60px] text-gray-700" />
           </button>
         </div>
       </div>
       <div className="overflow-x-auto w-full mt-[30px] px-[50px]">
         <StatusBar userId={uData?.id ?? ""} />
         <div className="flex flex-row justify-evenly min-w-[1100px] w-full mt-5 rounded-md bg-gray-100 shadow-md shadow-gray-500 p-3">
-          <div className="bg-gray-200 w-[250px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300">
+          <div className="bg-gray-200 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300">
             <input
               type="text"
               className="rounded-md  h-[40px] outline-0 text-gray-900 pl-3 w-full border-2"
@@ -167,19 +170,27 @@ const TicketList: React.FC = () => {
             value={selectPriority}
             onChange={setSelectPriority}
             isAll={true}
-            className={`rounded-md px-3 h-[40px] text-gray-900 font-medium bg-gray-200 outline-0 border-2 w-[250px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
+            className={`rounded-md px-3 h-[40px] text-gray-900 font-medium bg-gray-200 outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
           />
           <StatusDropdown
             value={selectStatus}
             onChange={setSelectStatus}
             isAll={true}
-            className={`rounded-md px-3 h-[40px] font-medium bg-gray-200 text-gray-900 outline-0 border-2 w-[250px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
+            className={`rounded-md px-3 h-[40px] font-medium bg-gray-200 text-gray-900 outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
           />
           <TicketStatusDropdown
             value={ticketStatus}
             onChange={setTicketStatus}
-            className={`rounded-md px-3 h-[40px] font-medium bg-gray-200 text-gray-900 outline-0 border-2 w-[250px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
+            className={`rounded-md px-3 h-[40px] font-medium bg-gray-200 text-gray-900 outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
           />
+          <button
+            className="rounded-md px-2 h-[40px] outline-0 text-gray-900 bg-gray-200 pt-1 font-medium text-center border-2 hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300 flex justify-center"
+            onClick={() => {
+              setView(!view); 
+            }}
+          >
+            {view === true ? <LuTableProperties className="w-[30px] h-[30px]" title="Table View" /> : <FaRegAddressCard  className="w-[30px] h-[30px]" title="Card View"/>}
+          </button>
           <button
             className="rounded-md  h-[40px] outline-0 text-gray-900 bg-gray-200 w-[40px] font-medium text-center border-2 hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300 flex justify-center"
             onClick={handleReset}
@@ -193,6 +204,7 @@ const TicketList: React.FC = () => {
             <DeletedTicket
               deleteTicket={deleteTicket}
               handleViewDetails={handleViewDetails}
+              view={view}
             />
           ) : (
             <ActiveTicket
@@ -201,6 +213,7 @@ const TicketList: React.FC = () => {
               handleDelete={handleDelete}
               ticketData={ticketData}
               setTicketData={setTicketData}
+              view={view}
             />
           )}
         </div>

@@ -16,7 +16,7 @@ const UserDetails:React.FC<UserDetailsProps> = ({showForm,setShowForm,uData,setU
   return (
     <div>
         {showForm && (
-          <div className="w-[250px] border-2 rounded-md z-100 shadow-lg bg-white shadow-gray-500">
+          <div className="w-[250px] border-2 border-gray-800 text-gray-700 rounded-md z-100 shadow-lg bg-white shadow-gray-500">
             <p className="flex justify-center mt-2">
               <LuCircleUser className="h-[40px] w-[60px]" />
             </p>

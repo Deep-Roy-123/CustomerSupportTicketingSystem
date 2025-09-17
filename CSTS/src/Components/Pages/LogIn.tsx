@@ -53,7 +53,7 @@ const LogIn: React.FC = () => {
           }}
           title="Sign Up"
         >
-          <ImUserPlus className="w-[60px] h-[35px]" />
+          <ImUserPlus className="w-[60px] h-[35px] text-gray-700" />
         </button>
       </div>
 
@@ -64,7 +64,7 @@ const LogIn: React.FC = () => {
           onSubmit={handleSubmit}
         >
           {/* email field */}
-          <div className="text-[18px] md:text-[25px] font-medium flex flex-col gap-1">
+          <div className="text-[20px] md:text-[25px] font-medium flex flex-col gap-1">
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -73,13 +73,13 @@ const LogIn: React.FC = () => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className=" text-[20px] rounded-md border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </div>
 
           {/* password field */}
-          <div className="mt-2 text-[18px] md:text-[25px] font-medium flex flex-col gap-1">
+          <div className="mt-2 text-[20px] md:text-[25px] font-medium flex flex-col gap-1">
             <label htmlFor="password">Password</label>
             <input
               name="password"
@@ -87,7 +87,7 @@ const LogIn: React.FC = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 focus:transition focus:scale-103"
+              className="text-[20px] md:h-[50px] rounded-md border-2 pl-2 focus:transition focus:scale-103"
             />
             {errors.password && touched.password && (
               <p className="text-red-500">{errors.password}</p>
@@ -97,11 +97,11 @@ const LogIn: React.FC = () => {
           {/* Submit Btn */}
           <button
             type="submit"
-            className="w-full text-gray-800 text-[18px] md:text-[30px] mt-3 font-medium rounded-md bg-blue-400 h-[35px] md:h-[60px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
+            className="w-full text-gray-800 text-[18px] md:text-[30px] mt-3 font-medium rounded-md bg-blue-400 h-[35px] md:h-[50px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
           >
             Sign In
           </button>
-          <p className="text-center">
+          <p className="text-center mt-1">
             Don't have an account?{" "}
             <button
               className="text-blue-700 underline"

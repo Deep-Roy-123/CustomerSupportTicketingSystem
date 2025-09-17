@@ -1,14 +1,21 @@
 import type React from "react";
 import type { Input } from "./CreateNewTicket";
+import DeletedTicketCardView from "./DeletedTicketCardView";
 
-interface DeletedTicketProps{
-    deleteTicket: Input[];
-    handleViewDetails: (tdata: Input) => void;
+interface DeletedTicketProps {
+  deleteTicket: Input[];
+  handleViewDetails: (tdata: Input) => void;
+  view: boolean;
 }
-const DeletedTicket:React.FC<DeletedTicketProps> = ({deleteTicket,handleViewDetails}) => {
-    
+const DeletedTicket: React.FC<DeletedTicketProps> = ({
+  deleteTicket,
+  handleViewDetails,
+  view,
+}) => {
   return (
-    <table className="min-w-[1100px] w-full table-auto border-collapse mt-5">
+    <div>
+      {view === false && (
+        <table className="min-w-[1100px] w-full table-auto border-collapse mt-5">
           <thead className="bg-gray-500 text-white">
             <tr>
               <th className="border-2 font-medium border-black px-1 text-[20px]">
@@ -36,7 +43,7 @@ const DeletedTicket:React.FC<DeletedTicketProps> = ({deleteTicket,handleViewDeta
           </thead>
           <tbody>
             {deleteTicket.map((tdata) => {
-                console.log(tdata);
+              console.log(tdata);
               return (
                 <tr
                   key={tdata.id}
@@ -78,20 +85,25 @@ const DeletedTicket:React.FC<DeletedTicketProps> = ({deleteTicket,handleViewDeta
                   </td>
                   <td className="border-2 p-2 text-center">
                     <button
-                        className="rounded-md p-2 font-medium bg-green-600 text-white hover:transition-all hover:bg-green-700 hover:scale-103 hover:delay-300"
-                        onClick={() => {
-                          handleViewDetails(tdata);
-                        }}
-                      >
-                        View Detail
-                      </button>
+                      className="rounded-md p-2 font-medium bg-green-600 text-white hover:transition-all hover:bg-green-700 hover:scale-103 hover:delay-300"
+                      onClick={() => {
+                        handleViewDetails(tdata);
+                      }}
+                    >
+                      View Detail
+                    </button>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-  )
-}
+      )}
+      {view === true && (
+        <DeletedTicketCardView deleteTicket={deleteTicket} handleViewDetails={handleViewDetails}/>
+      )}
+    </div>
+  );
+};
 
-export default DeletedTicket
+export default DeletedTicket;

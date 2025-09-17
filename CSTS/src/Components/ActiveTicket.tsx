@@ -2,19 +2,29 @@ import type React from "react";
 import type { Input } from "./CreateNewTicket";
 import StatusDropdown from "./StatusDropdown";
 import { type Dispatch, type SetStateAction } from "react";
+import ActiveTicketCardView from "./ActiveTicketCardView";
 
-interface ActiveTicketProps{
- filterData:Input[];
- handleViewDetails: (tdata: Input) => void;
- handleDelete: (id: string) => void;
- ticketData: Input[];
- setTicketData: Dispatch<SetStateAction<Input[]>>;
+interface ActiveTicketProps {
+  filterData: Input[];
+  handleViewDetails: (tdata: Input) => void;
+  handleDelete: (id: string) => void;
+  ticketData: Input[];
+  setTicketData: Dispatch<SetStateAction<Input[]>>;
+  view: boolean;
 }
 
-const ActiveTicket:React.FC<ActiveTicketProps> = ({filterData,handleViewDetails,handleDelete,ticketData,setTicketData}) => {
-  
+const ActiveTicket: React.FC<ActiveTicketProps> = ({
+  filterData,
+  handleViewDetails,
+  handleDelete,
+  ticketData,
+  setTicketData,
+  view,
+}) => {
   return (
-    <table className="min-w-[1100px] w-full table-auto border-collapse mt-5 mb-10">
+    <div>
+      {view === false && (
+        <table className="min-w-[1100px] w-full table-auto border-collapse mt-5 mb-10">
           <thead className="bg-gray-500 text-white">
             <tr>
               <th className="border-2 font-medium border-black px-1 text-[20px]">
@@ -107,10 +117,18 @@ const ActiveTicket:React.FC<ActiveTicketProps> = ({filterData,handleViewDetails,
                         />
                       </div>
                       <button
-                        className={` text-white rounded-md py-2 w-[80px] font-medium ${tdata.status !== 'Resolved' ? 'bg-red-300 cursor-not-allowed' : 'bg-red-500 hover:transition-all hover:bg-red-600 hover:scale-103 hover:delay-300'}`}
+                        className={` text-white rounded-md py-2 w-[80px] font-medium ${
+                          tdata.status !== "Resolved"
+                            ? "bg-red-300 cursor-not-allowed"
+                            : "bg-red-500 hover:transition-all hover:bg-red-600 hover:scale-103 hover:delay-300"
+                        }`}
                         onClick={() => handleDelete(tdata.id)}
-                        disabled={tdata.status !== 'Resolved'}
-                        title={tdata.status !== 'Resolved' ? 'Ticket is not resolved' : ''}
+                        disabled={tdata.status !== "Resolved"}
+                        title={
+                          tdata.status !== "Resolved"
+                            ? "Ticket is not resolved"
+                            : ""
+                        }
                       >
                         Delete
                       </button>
@@ -121,7 +139,12 @@ const ActiveTicket:React.FC<ActiveTicketProps> = ({filterData,handleViewDetails,
             })}
           </tbody>
         </table>
-  )
-}
+      )}
+      {view === true && (
+        <ActiveTicketCardView filterData={filterData} ticketData={ticketData} setTicketData={setTicketData} handleViewDetails={handleViewDetails} handleDelete={handleDelete}/>
+      )}
+    </div>
+  );
+};
 
-export default ActiveTicket
+export default ActiveTicket;

@@ -73,7 +73,7 @@ const SignUp: React.FC = () => {
           onSubmit={handleSubmit}
         >
           {/* name field */}
-          <div className="text-[18px] md:text-[25px] font-medium flex flex-col gap-1">
+          <div className="text-[20px] md:text-[25px] font-medium flex flex-col gap-1">
             <label htmlFor="name">Name</label>
             <input
               type="name"
@@ -82,13 +82,13 @@ const SignUp: React.FC = () => {
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className="rounded-md text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
             />
             {errors.name && <p className="text-red-500">{errors.name}</p>}
           </div>
 
           {/* email field */}
-          <div className="text-[18px] md:text-[25px] font-medium flex flex-col gap-1">
+          <div className="text-[20px] md:text-[25px] font-medium flex flex-col gap-1">
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -97,13 +97,13 @@ const SignUp: React.FC = () => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className="rounded-md text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </div>
 
           {/* password field */}
-          <div className="mt-2 text-[18px] md:text-[25px] font-medium flex flex-col gap-1">
+          <div className="mt-2 text-[20px] md:text-[25px] font-medium flex flex-col gap-1">
             <label htmlFor="password">Password</label>
             <input
               name="password"
@@ -111,7 +111,7 @@ const SignUp: React.FC = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 focus:transition focus:scale-103"
+              className="rounded-md text-[20px] md:h-[50px] border-2 pl-2 focus:transition focus:scale-103"
             />
             {errors.password && touched.password && (
               <p className="text-red-500">{errors.password}</p>
@@ -121,14 +121,14 @@ const SignUp: React.FC = () => {
           {/* Submit Btn */}
           <button
             type="submit"
-            className="w-full text-gray-800 text-[18px] md:text-[30px] mt-3 font-medium rounded-md bg-blue-400 h-[35px] md:h-[60px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
+            className="w-full text-gray-800 text-[20px] md:text-[30px] mt-4 font-medium rounded-md bg-blue-400 h-[35px] md:h-[50px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
           >
             Sign Up
           </button>
-          <p className="text-center">
+          <p className="text-center mt-1">
             Do you have an account?{" "}
             <button
-              className="text-blue-700"
+              className="text-blue-700 underline"
               onClick={() => {
                 navigate("/");
               }}

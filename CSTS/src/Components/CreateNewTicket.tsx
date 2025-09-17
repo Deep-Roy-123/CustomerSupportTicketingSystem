@@ -98,7 +98,7 @@ const CreateNewTicket: React.FC = () => {
               value={values.title}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className="rounded-md  text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
             />
             {errors.title && <p className="text-red-500">{errors.title}</p>}
           </div>
@@ -112,7 +112,7 @@ const CreateNewTicket: React.FC = () => {
               value={values.description}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 focus:transition focus:scale-103"
+              className="rounded-md text-[20px] border-2 pl-2 focus:transition focus:scale-103"
             />
             {errors.description && touched.description && (
               <p className="text-red-500">{errors.description}</p>
@@ -127,7 +127,7 @@ const CreateNewTicket: React.FC = () => {
               value={values.priority}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className="rounded-md text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
             >
               <option value="" hidden>
                 Select Priority
@@ -146,7 +146,7 @@ const CreateNewTicket: React.FC = () => {
           {/* Submit Btn */}
           <button
             type="submit"
-            className="w-full text-gray-800 text-[18px] md:text-[30px] mt-3 font-medium rounded-md bg-blue-400 h-[35px] md:h-[60px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
+            className="w-full text-gray-800 text-[18px] md:text-[30px] mt-4 font-medium rounded-md bg-blue-400 h-[35px] md:h-[50px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
           >
             Submit
           </button>
