@@ -67,7 +67,7 @@ const TicketDetail: React.FC = () => {
             className="font-medium text-[18px] md:text-[22px] rounded-md bg-blue-400 h-[50px] px-2 mt-2 md:px-3 hover:transition-all hover:bg-blue-600 hover:scale-103 hover:delay-300"
             type="button"
             onClick={() => {
-              navigate("/");
+              navigate("/createTicket");
             }}
             title="Add Ticket"
           >

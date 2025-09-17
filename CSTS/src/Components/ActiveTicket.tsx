@@ -1,8 +1,7 @@
 import type React from "react";
 import type { Input } from "./CreateNewTicket";
 import StatusDropdown from "./StatusDropdown";
-import type { Dispatch, SetStateAction } from "react";
-//import { useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 interface ActiveTicketProps{
  filterData:Input[];
@@ -13,6 +12,7 @@ interface ActiveTicketProps{
 }
 
 const ActiveTicket:React.FC<ActiveTicketProps> = ({filterData,handleViewDetails,handleDelete,ticketData,setTicketData}) => {
+  
   return (
     <table className="min-w-[1100px] w-full table-auto border-collapse mt-5 mb-10">
           <thead className="bg-gray-500 text-white">

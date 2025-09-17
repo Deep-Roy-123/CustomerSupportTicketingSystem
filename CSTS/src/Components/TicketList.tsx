@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Input } from "./CreateNewTicket";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PriorityDropdown from "./PriorityDropdown";
 import StatusDropdown from "./StatusDropdown";
 import StatusBar from "./StatusBar";
@@ -9,6 +9,9 @@ import TicketStatusDropdown from "./TicketStatusDropdown";
 import DeletedTicket from "./DeletedTicket";
 import ActiveTicket from "./ActiveTicket";
 import { RiResetRightFill } from "react-icons/ri";
+import { FaRegUserCircle } from "react-icons/fa";
+import type { User } from "./Pages/SignUp";
+import UserDetails from "./UserDetails";
 
 const TicketList: React.FC = () => {
   const [ticketData, setTicketData] = useState<Input[]>([]);
@@ -17,7 +20,23 @@ const TicketList: React.FC = () => {
   const [filterSearch, setFilterSearch] = useState<string>("");
   const [ticketStatus, setTicketStatus] = useState<string>("Active Ticket");
   const [deleteTicket, setDeleteTicket] = useState<Input[]>([]);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const { usrId } = location.state || {};
+    if (usrId) {
+      localStorage.setItem("userId", JSON.stringify(usrId));
+      setUserId(usrId);
+    } else {
+      const storedUserId = localStorage.getItem("userId");
+      if (storedUserId) {
+        setUserId(JSON.parse(storedUserId));
+      }
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const data: Input[] = JSON.parse(
@@ -29,11 +48,21 @@ const TicketList: React.FC = () => {
   const [filterData, setFilterData] = useState<Input[]>([]);
 
   useEffect(() => {
+    if (!userId) {
+      setFilterData([]);
+      setDeleteTicket([]);
+      return;
+    }
+
     let data: Input[] = ticketData;
     if (ticketStatus === "Delete Ticket") {
-      data = data.filter((ticket) => ticket.isDeleted === "true");
+      data = data.filter(
+        (ticket) => ticket.isDeleted === "true" && ticket.userId === userId
+      );
     } else if (ticketStatus === "" || ticketStatus === "Active Ticket") {
-      data = data.filter((ticket) => ticket.isDeleted === "false");
+      data = data.filter(
+        (ticket) => ticket.isDeleted === "false" && ticket.userId === userId
+      );
     }
 
     if (selectStatus !== "All" && selectStatus !== "") {
@@ -53,7 +82,14 @@ const TicketList: React.FC = () => {
     } else {
       setFilterData(data);
     }
-  }, [selectStatus, selectPriority, filterSearch, ticketData, ticketStatus]);
+  }, [
+    selectStatus,
+    selectPriority,
+    filterSearch,
+    ticketData,
+    ticketStatus,
+    userId,
+  ]);
 
   const handleDelete = (id: string) => {
     const updatedData = ticketData.map((ticket) => {
@@ -81,25 +117,40 @@ const TicketList: React.FC = () => {
     setFilterSearch("");
   };
 
+  const userData: User[] = JSON.parse(localStorage.getItem("userData") || "[]");
+  const uData = userId ? userData.find((d) => d.id === userId) : undefined;
+
   return (
     <div className="bg-gray-100 h-full md:h-screen">
-      <div className="flex justify-between items-center px-5 md:px-15 lg:px-20 py-2 rounded-md bg-white shadow-lg shadow-gray-400">
+      <div className="flex justify-between items-center px-4 md:px-15 lg:px-20 py-2 rounded-md bg-white shadow-lg shadow-gray-400">
         <h1 className="text-2xl md:text-4xl text-gray-900 font-bold">
           Ticket List
         </h1>
-        <button
-          className="font-medium md:text-[22px] rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-300"
-          type="button"
-          onClick={() => {
-            navigate("/");
-          }}
-          title="Add Ticket"
-        >
-          <MdAddCard className="w-[60px] h-[40px]" />
-        </button>
+        <div className="flex flex-row gap-2 md:gap-3">
+          <button
+            className="rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-300"
+            type="button"
+            onClick={() => {
+              navigate("/createTicket");
+            }}
+            title="Add Ticket"
+          >
+            <MdAddCard className="w-[40px] md:w-[60px] h-[40px]" />
+          </button>
+          <button
+            className="rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-105 hover:delay-300 "
+            type="button"
+            onClick={() => {
+              setShowForm(true);
+            }}
+            title="User Details"
+          >
+            <FaRegUserCircle className="h-[35px] w-[40px] md:w-[60px]" />
+          </button>
+        </div>
       </div>
       <div className="overflow-x-auto w-full mt-[30px] px-[50px]">
-        <StatusBar />
+        <StatusBar userId={uData?.id ?? ""} />
         <div className="flex flex-row justify-evenly min-w-[1100px] w-full mt-5 rounded-md bg-gray-100 shadow-md shadow-gray-500 p-3">
           <div className="bg-gray-200 w-[250px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300">
             <input
@@ -134,23 +185,33 @@ const TicketList: React.FC = () => {
             onClick={handleReset}
             title="Reset"
           >
-            <RiResetRightFill className="text-center text-[24px] mt-[6px]"/>
+            <RiResetRightFill className="text-center text-[24px] mt-[6px]" />
           </button>
         </div>
-        {ticketStatus === "Delete Ticket" ? (
-          <DeletedTicket
-            deleteTicket={deleteTicket}
-            handleViewDetails={handleViewDetails}
-          />
-        ) : (
-          <ActiveTicket
-            filterData={filterData}
-            handleViewDetails={handleViewDetails}
-            handleDelete={handleDelete}
-            ticketData={ticketData}
-            setTicketData={setTicketData}
-          />
-        )}
+        <div>
+          {ticketStatus === "Delete Ticket" ? (
+            <DeletedTicket
+              deleteTicket={deleteTicket}
+              handleViewDetails={handleViewDetails}
+            />
+          ) : (
+            <ActiveTicket
+              filterData={filterData}
+              handleViewDetails={handleViewDetails}
+              handleDelete={handleDelete}
+              ticketData={ticketData}
+              setTicketData={setTicketData}
+            />
+          )}
+        </div>
+      </div>
+      <div className="absolute top-18 right-2">
+        <UserDetails
+          showForm={showForm}
+          setShowForm={setShowForm}
+          uData={uData}
+          setUserId={setUserId}
+        />
       </div>
     </div>
   );

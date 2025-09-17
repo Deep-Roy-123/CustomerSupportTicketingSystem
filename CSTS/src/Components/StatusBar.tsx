@@ -1,18 +1,23 @@
 import type React from "react";
 import type { Input } from "./CreateNewTicket";
-const StatusBar:React.FC = () => {
+
+interface StatusBarProps{
+    userId: string;
+}
+
+const StatusBar:React.FC<StatusBarProps> = ({userId}) => {
   let data: Input[] = JSON.parse(
         localStorage.getItem("ticketData") || "[]"
       );
-  const deleteTicket=data.filter((d)=>d.isDeleted==="true").length;
-  const activeTicket=data.filter((d)=>d.isDeleted==="false");
-  const open=activeTicket.filter((d)=>d.status==='Open').length;
-  const inProgress=activeTicket.filter((d)=>d.status==='In Progress').length;
-  const resolved=activeTicket.filter((d)=>d.status==='Resolved').length;
+  const deleteTicket=data.filter((d)=>d.isDeleted==="true" && d.userId===userId).length;
+  const activeTicket=data.filter((d)=>d.isDeleted==="false" && d.userId===userId);
+  const open=activeTicket.filter((d)=>d.status==='Open' && d.userId===userId).length;
+  const inProgress=activeTicket.filter((d)=>d.status==='In Progress' && d.userId===userId).length;
+  const resolved=activeTicket.filter((d)=>d.status==='Resolved' && d.userId===userId).length;
 
-  const low=activeTicket.filter((d)=>d.priority==="Low").length;
-  const medium=activeTicket.filter((d)=>d.priority==="Medium").length;
-  const high=activeTicket.filter((d)=>d.priority==="High").length;
+  const low=activeTicket.filter((d)=>d.priority==="Low" && d.userId===userId).length;
+  const medium=activeTicket.filter((d)=>d.priority==="Medium" && d.userId===userId).length;
+  const high=activeTicket.filter((d)=>d.priority==="High" && d.userId===userId).length;
   return (
     <div className="min-w-[1100px] w-full">
         <div className="flex flex-row justify-evenly h-27">
