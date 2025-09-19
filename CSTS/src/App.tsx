@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import CreateNewTicket from './Components/CreateNewTicket'
 import TicketList from './Components/TicketList'
 import TicketDetail from './Components/TicketDetail'
-import LogIn from './Components/Pages/Login'
 import SignUp from './Components/Pages/SignUp'
+import LogIn from './Components/Pages/LogIn'
 
 
 function App() {

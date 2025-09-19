@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import type { Input } from "./CreateNewTicket";
 import StatusDropdown from "./StatusDropdown";
 import { RiListView } from "react-icons/ri";
-import { MdAddCard } from "react-icons/md";
+import { MdAddCard, MdLightMode } from "react-icons/md";
 import CommentsForm from "./CommentsForm";
 
 export interface Comment {
@@ -25,11 +25,18 @@ const TicketDetail: React.FC = () => {
   const [showTicket, setShowTicket] = useState(true);
   const { ticket } = location.state || {};
   const [currentTicket, setCurrentTicket] = useState(ticket);
+  
+  const theme:boolean=JSON.parse(localStorage.getItem("darkMode") ?? "false");
+  const [darkMode, setDarkMode] = useState(theme);
 
   const data: Input[] = JSON.parse(localStorage.getItem("ticketData") || "[]");
+  const uid: string = localStorage.getItem("userId") || "";
   useEffect(() => {
     setTicketData(data);
-  }, []);
+    if (uid === "") {
+      navigate("/");
+    }
+  }, [uid]);
 
   useEffect(() => {
     const updatedData = ticketData.find((td) => td.id === ticket.id);
@@ -59,8 +66,8 @@ const TicketDetail: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-300 flex flex-col relative h-full">
-      <div className="flex justify-between items-center bg-white px-5 md:px-15 lg:px-20 rounded-md shadow-lg shadow-gray-500 py-2 gap-10">
+    <div className={`flex flex-col relative min-h-screen ${(darkMode===true)?'bg-gray-800 text-gray-200 border-gray-200':'bg-gray-200 text-gray-800 border-gray-800'}`}>
+      <div className="flex justify-between items-center px-5 md:px-15 lg:px-20 rounded-md shadow-md shadow-gray-500 py-2 gap-10">
         <p className="text-2xl md:text-4xl font-bold">Ticket Details</p>
         <div className="flex flex-row gap-2 md:gap-5">
           <button
@@ -87,7 +94,7 @@ const TicketDetail: React.FC = () => {
       </div>
       {showTicket && (
         <div className="flex justify-center">
-          <div className="bg-gray-100 rounded-lg w-[310px] md:w-[700px] lg:w-[900px] shadow-2xl mx-2 md:mx-5 lg:mx-10 shadow-gray-900  mt-10 mb-10">
+          <div className="rounded-lg w-[310px] md:w-[700px] lg:w-[900px] shadow-md mx-2 md:mx-5 lg:mx-10 shadow-gray-500  mt-10 mb-10">
             <p className="text-[22px] md:text-2xl font-medium mt-3 text-center">
               {currentTicket.title}
             </p>
@@ -101,7 +108,7 @@ const TicketDetail: React.FC = () => {
                   : "text-red-600"
               }`}
             >
-              <span className="text-[20px] text-black">Priority :</span>{" "}
+              <span className="text-[20px]">Priority :</span>{" "}
               {currentTicket.priority}
             </p>
             <div className="flex justify-between px-3 mt-2">
@@ -114,7 +121,7 @@ const TicketDetail: React.FC = () => {
                     : "text-green-600"
                 }`}
               >
-                <span className="text-[20px] text-black">Status :</span>{" "}
+                <span className="text-[20px]">Status :</span>{" "}
                 {currentTicket.status}
               </p>
 
@@ -144,7 +151,7 @@ const TicketDetail: React.FC = () => {
                       );
                     }}
                     isAll={false}
-                    className={`rounded-md px-3 h-[40px] font-medium outline-0 w-[110px] ml-3 md:ml-[-30px] md:w-[180px] text-black bg-blue-400 hover:transition-all hover:bg-blue-600 hover:scale-103 hover:delay-300`}
+                    className={`rounded-md px-3 h-[40px] font-medium outline-0 w-[110px] ml-3 md:ml-[-30px] md:w-[180px] bg-blue-400 hover:transition-all hover:bg-blue-600 hover:scale-103 hover:delay-300`}
                   />
                 </div>
               )}
@@ -180,7 +187,7 @@ const TicketDetail: React.FC = () => {
             </fieldset>
 
             <div className="flex flex-col md:flex-row justify-between mt-4 mb-5 mx-3 gap-3 md:gap-10">
-              <fieldset className="rounded-md bg-gray-100 w-full md:mt-2 border-2 px-2">
+              <fieldset className="rounded-md w-full md:mt-2 border-2 px-2">
                 <legend className="font-medium text-center text-[20px] px-2">
                   Comments
                 </legend>
@@ -235,10 +242,25 @@ const TicketDetail: React.FC = () => {
               showForm={showForm}
               setShowForm={setShowForm}
               ticket={ticket}
+              darkMode={darkMode}
             />
           </div>
         </div>
       )}
+      <div className="fixed bottom-2 right-2 z-100">
+        <button
+          onClick={() => {
+            setDarkMode(!darkMode);
+            localStorage.setItem("darkMode",JSON.stringify(!darkMode));
+          }}
+        >
+          <MdLightMode
+            className={`h-[40px] w-[40px] ${
+              darkMode === true ? "text-yellow-300" : "text-black"
+            }`}
+          />
+        </button>
+      </div>
     </div>
   );
 };

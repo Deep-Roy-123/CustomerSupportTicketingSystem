@@ -7,42 +7,47 @@ interface ActiveTicketCardViewProps{
   setTicketData: Dispatch<SetStateAction<Input[]>>;
   handleViewDetails: (tdata: Input) => void; 
   handleDelete: (id: string) => void;
+  darkMode:boolean;
 }
 
-const ActiveTicketCardView:React.FC<ActiveTicketCardViewProps>= ({filterData, ticketData, setTicketData,handleViewDetails, handleDelete }) => {
+const ActiveTicketCardView:React.FC<ActiveTicketCardViewProps>= ({filterData, ticketData, setTicketData,handleViewDetails, handleDelete, darkMode }) => {
   return (
-    <div className="min-w-[1100px] mt-6 pb-5 flex flex-wrap justify-evenly bg-gray-200 rounded-md">
+    <div className={`min-w-[1100px] my-6 flex flex-wrap justify-evenly rounded-md ${(darkMode===true)?'bg-gray-800 shadow-md shadow-gray-500':'bg-gray-200 shadow-md shadow-gray-500'}`}>
           {filterData.map((tdata) => (
-            <div className="bg-gray-100 rounded-md p-3 w-[320px] mt-4 shadow-lg">
+            <div className={`rounded-md p-3 my-8 w-[320px] hover:transition hover:scale-105 mt-8 shadow-md shadow-gray-500 ${(darkMode===true)?'bg-gray-800 text-gray-200':'bg-gray-200 text-gray-800'}`}>
               <div className="flex flex-row justify-between">
                 <p className="text-blue-500 font-medium">{tdata.id}</p>
                 <p
-                  className={`border-2 rounded-lg text-center border-gray-800 font-medium px-2 ${
+                  className={`border-2 rounded-lg text-center font-medium px-2 ${
                     tdata.priority !== "Low"
                       ? tdata.priority === "Medium"
                         ? "text-amber-500"
                         : "text-green-600"
                       : "text-red-600"
-                  }`}
+                  }
+                  ${darkMode === true ? "border-gray-200" : "border-gray-800"}
+                  `}
                 >
                   {tdata.priority}
                 </p>
                 <p
-                  className={`border-2 rounded-lg border-gray-800 text-center font-medium px-2 ${
+                  className={`border-2 rounded-lg text-center font-medium px-2 ${
                     tdata.status !== "Open"
                       ? tdata.status === "In Progress"
                         ? "text-amber-500"
                         : "text-red-600"
                       : "text-green-600"
-                  }`}
+                  }
+                  ${darkMode === true ? "border-gray-200" : "border-gray-800"}
+                  `}
                 >
                   {tdata.status}
                 </p>
               </div>
-              <p className="text-center mt-4 font-medium text-gray-800 text-[20px]">
+              <p className="text-center mt-4 font-medium text-[20px]">
                 {tdata.title}
               </p>
-              <p className="font-medium text-[18px] text-gray-800 mt-4">
+              <p className="font-medium text-[18px] mt-4">
                 Created Date :{" "}
                 <span className="font-medium text-[16px]">{tdata.date}</span>
               </p>

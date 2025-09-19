@@ -3,6 +3,8 @@ import { ValidationSchema } from "../Schema/ValidationSchema";
 import { useNavigate } from "react-router-dom";
 import { RiListView } from "react-icons/ri";
 import type React from "react";
+import { useEffect, useState } from "react";
+import { MdLightMode } from "react-icons/md";
 
 export interface Input {
   title: string;
@@ -19,7 +21,18 @@ export interface Input {
 const CreateNewTicket: React.FC = () => {
   const priority: string[] = ["Low", "Medium", "High"];
   const navigate = useNavigate();
-  const uid: string = JSON.parse(localStorage.getItem("userId") || "");
+  const theme: boolean = JSON.parse(
+    localStorage.getItem("darkMode") ?? "false"
+  );
+  const [darkMode, setDarkMode] = useState(theme);
+  const uid: string = localStorage.getItem("userId") || "";
+
+  useEffect(() => {
+    if (uid === "") {
+      navigate("/");
+    }
+  }, [uid]);
+
   const initialVal = {
     title: "",
     description: "",
@@ -67,13 +80,17 @@ const CreateNewTicket: React.FC = () => {
     });
 
   return (
-    <div className="bg-gray-300 h-screen">
-      <div className="flex justify-between w-full items-center px-5 md:px-15 lg:px-20 py-2 rounded-md bg-white shadow-lg shadow-gray-400">
-        <h1 className="text-2xl md:text-4xl text-gray-900 font-bold">
-          Create Ticket
-        </h1>
+    <div
+      className={`min-h-screen ${
+        darkMode === true
+          ? "bg-gray-800 text-gray-200"
+          : "bg-gray-200 text-gray-800"
+      }`}
+    >
+      <div className="flex justify-between w-full items-center px-5 md:px-15 lg:px-20 py-2 rounded-md shadow-md shadow-gray-500">
+        <h1 className="text-2xl md:text-4xl font-bold">Create Ticket</h1>
         <button
-          className="font-medium md:text-[22px] rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-105 hover:delay-300 "
+          className="font-medium md:text-[22px] rounded-md bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-105 hover:delay-300 "
           type="button"
           onClick={() => {
             navigate("/dashboard");
@@ -85,7 +102,7 @@ const CreateNewTicket: React.FC = () => {
       </div>
       <div className="flex flex-col justify-center items-center mt-5 md:mt-0 pb-2">
         <form
-          className=" w-[300px] md:w-[600px] shadow-xl shadow-gray-500 bg-gray-200 rounded-2xl px-[15px] py-[10px] md:px-[25px] md:py-[20px] md:my-10 "
+          className=" w-[300px] md:w-[600px] shadow-md shadow-gray-500 rounded-2xl px-[15px] py-[10px] md:px-[25px] md:py-[20px] md:my-10 "
           onSubmit={handleSubmit}
         >
           {/* name field */}
@@ -98,7 +115,9 @@ const CreateNewTicket: React.FC = () => {
               value={values.title}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md  text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className={`rounded-md outline-0 text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103 ${
+                darkMode === true ? "placeholder-gray-200" : ""
+              }`}
             />
             {errors.title && <p className="text-red-500">{errors.title}</p>}
           </div>
@@ -112,7 +131,9 @@ const CreateNewTicket: React.FC = () => {
               value={values.description}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md text-[20px] border-2 pl-2 focus:transition focus:scale-103"
+              className={`rounded-md outline-0 text-[20px] border-2 pl-2 focus:transition focus:scale-103 ${
+                darkMode === true ? "placeholder-gray-200" : ""
+              }`}
             />
             {errors.description && touched.description && (
               <p className="text-red-500">{errors.description}</p>
@@ -127,17 +148,24 @@ const CreateNewTicket: React.FC = () => {
               value={values.priority}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="rounded-md text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
+              className="rounded-md outline-0 text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103"
             >
               <option value="" hidden>
                 Select Priority
               </option>
               {priority.map((pr) => (
-                <option key={pr} value={pr}>
+                <option
+                  key={pr}
+                  value={pr}
+                  className={`${
+                    darkMode === true ? "text-gray-200 bg-gray-800" : ""
+                  }`}
+                >
                   {pr}
                 </option>
               ))}
             </select>
+
             {errors.priority && touched.priority && (
               <p className="text-red-500">{errors.priority}</p>
             )}
@@ -146,11 +174,25 @@ const CreateNewTicket: React.FC = () => {
           {/* Submit Btn */}
           <button
             type="submit"
-            className="w-full text-gray-800 text-[18px] md:text-[30px] mt-4 font-medium rounded-md bg-blue-400 h-[35px] md:h-[50px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
+            className="w-full text-[18px] md:text-[30px] mt-4 font-medium rounded-md bg-blue-400 h-[35px] md:h-[50px] hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-500"
           >
             Submit
           </button>
         </form>
+      </div>
+      <div className="fixed bottom-2 right-2 z-100">
+        <button
+          onClick={() => {
+            setDarkMode(!darkMode);
+            localStorage.setItem("darkMode", JSON.stringify(!darkMode));
+          }}
+        >
+          <MdLightMode
+            className={`h-[40px] w-[40px] ${
+              darkMode === true ? "text-yellow-300" : "text-black"
+            }`}
+          />
+        </button>
       </div>
     </div>
   );

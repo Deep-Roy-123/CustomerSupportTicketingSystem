@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import type { Input } from "./CreateNewTicket";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PriorityDropdown from "./PriorityDropdown";
 import StatusDropdown from "./StatusDropdown";
 import StatusBar from "./StatusBar";
-import { MdAddCard } from "react-icons/md";
+import { MdAddCard, MdLightMode } from "react-icons/md";
 import TicketStatusDropdown from "./TicketStatusDropdown";
 import DeletedTicket from "./DeletedTicket";
 import ActiveTicket from "./ActiveTicket";
@@ -23,31 +23,26 @@ const TicketList: React.FC = () => {
   const [deleteTicket, setDeleteTicket] = useState<Input[]>([]);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState("");
   const [view, setView] = useState(false);
+  const [filterData, setFilterData] = useState<Input[]>([]);
 
-  useEffect(() => {
-    const { usrId } = location.state || {};
-    if (usrId) {
-      localStorage.setItem("userId", JSON.stringify(usrId));
-      setUserId(usrId);
-    } else {
-      const storedUserId = localStorage.getItem("userId");
-      if (storedUserId) {
-        setUserId(JSON.parse(storedUserId));
-      }
-    }
-  }, [location.state]);
+  const theme:boolean=JSON.parse(localStorage.getItem("darkMode") ?? "false");
+  const [darkMode, setDarkMode] = useState(theme);
+  
 
   useEffect(() => {
     const data: Input[] = JSON.parse(
       localStorage.getItem("ticketData") || "[]"
     );
     setTicketData(data);
-  }, []);
-
-  const [filterData, setFilterData] = useState<Input[]>([]);
+    const usrId = localStorage.getItem("userId") || "";
+    setUserId(usrId);
+    console.log(usrId);
+    if (usrId === "") {
+      navigate("/");
+    }
+  }, [userId]);
 
   useEffect(() => {
     if (!userId) {
@@ -55,7 +50,6 @@ const TicketList: React.FC = () => {
       setDeleteTicket([]);
       return;
     }
-
     let data: Input[] = ticketData;
     if (ticketStatus === "Delete Ticket") {
       data = data.filter(
@@ -121,110 +115,146 @@ const TicketList: React.FC = () => {
   };
 
   const userData: User[] = JSON.parse(localStorage.getItem("userData") || "[]");
-  const uData = userId ? userData.find((d) => d.id === userId) : undefined;
 
   return (
-    <div className="bg-gray-100 h-full md:h-screen">
-      <div className="flex justify-between items-center px-4 md:px-15 lg:px-20 py-2 rounded-md bg-white shadow-lg shadow-gray-400">
-        <h1 className="text-2xl md:text-4xl text-gray-900 font-bold">
-          Ticket List
-        </h1>
-        <div className="flex flex-row gap-2 md:gap-3">
-          <button
-            className="rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-300"
-            type="button"
-            onClick={() => {
-              navigate("/createTicket");
-            }}
-            title="Add Ticket"
-          >
-            <MdAddCard className="w-[40px] md:w-[60px] h-[40px] text-gray-700" />
-          </button>
-          <button
-            className="rounded-md text-gray-900 bg-blue-400 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-105 hover:delay-300 "
-            type="button"
-            onClick={() => {
-              setShowForm(true);
-            }}
-            title="User Details"
-          >
-            <FaRegUserCircle className="h-[35px] w-[40px] md:w-[60px] text-gray-700" />
-          </button>
-        </div>
-      </div>
-      <div className="overflow-x-auto w-full mt-[30px] px-[50px]">
-        <StatusBar userId={uData?.id ?? ""} />
-        <div className="flex flex-row justify-evenly min-w-[1100px] w-full mt-5 rounded-md bg-gray-100 shadow-md shadow-gray-500 p-3">
-          <div className="bg-gray-200 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300">
-            <input
-              type="text"
-              className="rounded-md  h-[40px] outline-0 text-gray-900 pl-3 w-full border-2"
-              placeholder="Enter Ticket Title"
-              value={filterSearch}
-              onChange={(e) => {
-                setFilterSearch(e.target.value);
+    <div
+      className={`${
+        darkMode === true ? "bg-gray-800 text-gray-100" : "bg-gray-200 text-gray-800"
+      }`}
+    >
+      <div className="min-h-screen">
+        <div className="flex justify-between items-center px-4 md:px-15 lg:px-20 py-2 rounded-md shadow-md shadow-gray-500">
+          <h1 className="text-2xl md:text-4xl font-bold">
+            Ticket List
+          </h1>
+          <div className="flex flex-row gap-2 md:gap-3">
+            <button
+              className="rounded-md bg-blue-400 shadow-sm shadow-gray-500 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-300"
+              type="button"
+              onClick={() => {
+                navigate("/createTicket");
               }}
-            />
+              title="Add Ticket"
+            >
+              <MdAddCard className="w-[40px] md:w-[60px] h-[40px]" />
+            </button>
+            <button
+              className="rounded-md bg-blue-400 shadow-sm shadow-gray-500 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-105 hover:delay-300 "
+              type="button"
+              onClick={() => {
+                setShowForm(true);
+              }}
+              title="User Details"
+            >
+              <FaRegUserCircle className="h-[35px] w-[40px] md:w-[60px]" />
+            </button>
           </div>
-          <PriorityDropdown
-            value={selectPriority}
-            onChange={setSelectPriority}
-            isAll={true}
-            className={`rounded-md px-3 h-[40px] text-gray-900 font-medium bg-gray-200 outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
-          />
-          <StatusDropdown
-            value={selectStatus}
-            onChange={setSelectStatus}
-            isAll={true}
-            className={`rounded-md px-3 h-[40px] font-medium bg-gray-200 text-gray-900 outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
-          />
-          <TicketStatusDropdown
-            value={ticketStatus}
-            onChange={setTicketStatus}
-            className={`rounded-md px-3 h-[40px] font-medium bg-gray-200 text-gray-900 outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300`}
-          />
-          <button
-            className="rounded-md px-2 h-[40px] outline-0 text-gray-900 bg-gray-200 pt-1 font-medium text-center border-2 hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300 flex justify-center"
-            onClick={() => {
-              setView(!view); 
-            }}
-          >
-            {view === true ? <LuTableProperties className="w-[30px] h-[30px]" title="Table View" /> : <FaRegAddressCard  className="w-[30px] h-[30px]" title="Card View"/>}
-          </button>
-          <button
-            className="rounded-md  h-[40px] outline-0 text-gray-900 bg-gray-200 w-[40px] font-medium text-center border-2 hover:transition hover:scale-103 hover:delay-300 hover:bg-gray-300 flex justify-center"
-            onClick={handleReset}
-            title="Reset"
-          >
-            <RiResetRightFill className="text-center text-[24px] mt-[6px]" />
-          </button>
         </div>
-        <div>
-          {ticketStatus === "Delete Ticket" ? (
-            <DeletedTicket
-              deleteTicket={deleteTicket}
-              handleViewDetails={handleViewDetails}
-              view={view}
+        <div className="overflow-x-auto w-full mt-[30px] px-[50px]">
+          <StatusBar userId={userId} darkMode={darkMode}/>
+          <div className="flex flex-row justify-evenly min-w-[1100px] w-full mt-5 rounded-md shadow-md shadow-gray-500 p-3">
+            <div className="w-[230px] hover:transition hover:scale-103 hover:delay-300">
+              <input
+                type="text"
+                className={`rounded-md  h-[40px] outline-0 pl-3 w-full border-2 ${(darkMode===true)?'placeholder-gray-200':''}`}
+                placeholder="Enter Ticket Title"
+                value={filterSearch}
+                onChange={(e) => {
+                  setFilterSearch(e.target.value);
+                }}
+              />
+            </div>
+            <PriorityDropdown
+              value={selectPriority}
+              onChange={setSelectPriority}
+              isAll={true}
+              darkMode={darkMode}
+              className={`rounded-md px-3 h-[40px] font-medium outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300`}
             />
-          ) : (
-            <ActiveTicket
-              filterData={filterData}
-              handleViewDetails={handleViewDetails}
-              handleDelete={handleDelete}
-              ticketData={ticketData}
-              setTicketData={setTicketData}
-              view={view}
+            <StatusDropdown
+              value={selectStatus}
+              onChange={setSelectStatus}
+              darkMode={darkMode}
+              isAll={true}
+              className={`rounded-md px-3 h-[40px] font-medium outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300`}
             />
-          )}
+            <TicketStatusDropdown
+              value={ticketStatus}
+              onChange={setTicketStatus}
+              darkMode={darkMode}
+              className={`rounded-md px-3 h-[40px] font-medium outline-0 border-2 w-[230px] hover:transition hover:scale-103 hover:delay-300`}
+            />
+            <button
+              className="rounded-md bg-blue-400 shadow-sm shadow-gray-500 hover:bg-blue-600 px-2 h-[40px] outline-0 pt-1 font-medium text-center hover:transition hover:scale-103 hover:delay-300 flex justify-center"
+              onClick={() => {
+                setView(!view);
+              }}
+            >
+              {view === true ? (
+                <LuTableProperties
+                  className="w-[30px] h-[30px] mt-[2px]"
+                  title="Table View"
+                />
+              ) : (
+                <FaRegAddressCard
+                  className="w-[30px] h-[30px] mt-[2px]"
+                  title="Card View"
+                />
+              )}
+            </button>
+            <button
+              className="rounded-md bg-blue-400 shadow-sm shadow-gray-500 h-[40px] outline-0 w-[46px] font-medium text-center pt-[2px] hover:bg-blue-600 hover:transition hover:scale-103 hover:delay-300 flex justify-center"
+              onClick={handleReset}
+              title="Reset"
+            >
+              <RiResetRightFill className="text-center text-[25px] mt-[6px]" />
+            </button>
+          </div>
+          <div>
+            {ticketStatus === "Delete Ticket" ? (
+              <DeletedTicket
+                deleteTicket={deleteTicket}
+                handleViewDetails={handleViewDetails}
+                view={view}
+                darkMode={darkMode}
+              />
+            ) : (
+              <ActiveTicket
+                filterData={filterData}
+                handleViewDetails={handleViewDetails}
+                handleDelete={handleDelete}
+                ticketData={ticketData}
+                setTicketData={setTicketData}
+                view={view}
+                darkMode={darkMode}
+              />
+            )}
+          </div>
+        </div>
+        <div className="absolute top-18 right-2">
+          <UserDetails
+            showForm={showForm}
+            setShowForm={setShowForm}
+            userId={userId}
+            setUserId={setUserId}
+            userData={userData}
+            darkMode={darkMode}
+          />
         </div>
       </div>
-      <div className="absolute top-18 right-2">
-        <UserDetails
-          showForm={showForm}
-          setShowForm={setShowForm}
-          uData={uData}
-          setUserId={setUserId}
-        />
+      <div className="fixed bottom-2 right-2 z-100">
+        <button
+          onClick={() => {
+            setDarkMode(!darkMode);
+            localStorage.setItem("darkMode",JSON.stringify(!darkMode));
+          }}
+        >
+          <MdLightMode
+            className={`h-[40px] w-[40px] ${
+              darkMode === true ? "text-yellow-300" : "text-black"
+            }`}
+          />
+        </button>
       </div>
     </div>
   );

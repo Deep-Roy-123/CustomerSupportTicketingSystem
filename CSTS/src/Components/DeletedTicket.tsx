@@ -6,37 +6,79 @@ interface DeletedTicketProps {
   deleteTicket: Input[];
   handleViewDetails: (tdata: Input) => void;
   view: boolean;
+  darkMode: boolean;
 }
 const DeletedTicket: React.FC<DeletedTicketProps> = ({
   deleteTicket,
   handleViewDetails,
   view,
+  darkMode,
 }) => {
   return (
-    <div>
+    <div
+      className={`${
+        darkMode === true
+          ? "bg-gray-800 text-gray-200 border-gray-200"
+          : "bg-gray-200 text-gray-800 border-gray-800"
+      }`}
+    >
       {view === false && (
         <table className="min-w-[1100px] w-full table-auto border-collapse mt-5">
-          <thead className="bg-gray-500 text-white">
+          <thead
+            className={`${
+              darkMode === true
+                ? "bg-gray-800 text-gray-200"
+                : "bg-gray-700 text-gray-200"
+            }`}
+          >
             <tr>
-              <th className="border-2 font-medium border-black px-1 text-[20px]">
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Id
               </th>
-              <th className="border-2 font-medium border-black px-1 text-[20px]">
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Title
               </th>
-              <th className="border-2 font-medium border-black px-1 text-[20px]">
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Priority
               </th>
-              <th className="border-2 font-medium border-black px-1 text-[20px]">
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Status
               </th>
-              <th className="border-2 font-medium border-black px-1 text-[20px]">
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Created Date
               </th>
-              <th className="border-2 font-medium border-black px-1 text-[20px]">
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Deleted Date
               </th>
-              <th className="border-2 font-medium border-black px-2 text-[20px]">
+              <th
+                className={`border-2 font-medium px-2 text-[20px] ${
+                  darkMode === true ? "" : "border-gray-800"
+                }`}
+              >
                 Action
               </th>
             </tr>
@@ -47,7 +89,11 @@ const DeletedTicket: React.FC<DeletedTicketProps> = ({
               return (
                 <tr
                   key={tdata.id}
-                  className="even:bg-gray-300 odd:bg-gray-100 text-gray-900"
+                  className={`${
+                    darkMode === true
+                      ? "even:bg-gray-700 odd:bg-gray-500"
+                      : "even:bg-gray-300 odd:bg-gray-100"
+                  }`}
                 >
                   <td className="border-2 text-center font-medium px-1">
                     {tdata.id}
@@ -56,24 +102,28 @@ const DeletedTicket: React.FC<DeletedTicketProps> = ({
                     {tdata.title}
                   </td>
                   <td
-                    className={`border-2 text-center border-black font-medium px-1 ${
+                    className={`border-2 text-center font-medium px-1 ${
                       tdata.priority !== "Low"
                         ? tdata.priority === "Medium"
                           ? "text-amber-500"
                           : "text-green-600"
                         : "text-red-600"
-                    }`}
+                    }
+                    ${darkMode === true ? "border-gray-200" : "border-gray-800"}
+                    `}
                   >
                     {tdata.priority}
                   </td>
                   <td
-                    className={`border-2 border-black text-center font-medium px-1 ${
+                    className={`border-2 text-center font-medium px-1 ${
                       tdata.status !== "Open"
                         ? tdata.status === "In Progress"
                           ? "text-amber-500"
                           : "text-red-600"
                         : "text-green-600"
-                    }`}
+                    }
+                    ${darkMode === true ? "border-gray-200" : "border-gray-800"}
+                    `}
                   >
                     {tdata.status}
                   </td>
@@ -100,7 +150,11 @@ const DeletedTicket: React.FC<DeletedTicketProps> = ({
         </table>
       )}
       {view === true && (
-        <DeletedTicketCardView deleteTicket={deleteTicket} handleViewDetails={handleViewDetails}/>
+        <DeletedTicketCardView
+          deleteTicket={deleteTicket}
+          handleViewDetails={handleViewDetails}
+          darkMode={darkMode}
+        />
       )}
     </div>
   );
