@@ -25,8 +25,10 @@ const TicketDetail: React.FC = () => {
   const [showTicket, setShowTicket] = useState(true);
   const { ticket } = location.state || {};
   const [currentTicket, setCurrentTicket] = useState(ticket);
-  
-  const theme:boolean=JSON.parse(localStorage.getItem("darkMode") ?? "false");
+
+  const theme: boolean = JSON.parse(
+    localStorage.getItem("darkMode") ?? "false"
+  );
   const [darkMode, setDarkMode] = useState(theme);
 
   const data: Input[] = JSON.parse(localStorage.getItem("ticketData") || "[]");
@@ -66,7 +68,13 @@ const TicketDetail: React.FC = () => {
   };
 
   return (
-    <div className={`flex flex-col relative min-h-screen ${(darkMode===true)?'bg-gray-800 text-gray-200 border-gray-200':'bg-gray-200 text-gray-800 border-gray-800'}`}>
+    <div
+      className={`flex flex-col relative min-h-screen ${
+        darkMode === true
+          ? "bg-gray-800 text-gray-200 border-gray-200"
+          : "bg-gray-200 text-gray-800 border-gray-800"
+      }`}
+    >
       <div className="flex justify-between items-center px-5 md:px-15 lg:px-20 rounded-md shadow-md shadow-gray-500 py-2 gap-10">
         <p className="text-2xl md:text-4xl font-bold">Ticket Details</p>
         <div className="flex flex-row gap-2 md:gap-5">
@@ -251,7 +259,7 @@ const TicketDetail: React.FC = () => {
         <button
           onClick={() => {
             setDarkMode(!darkMode);
-            localStorage.setItem("darkMode",JSON.stringify(!darkMode));
+            localStorage.setItem("darkMode", JSON.stringify(!darkMode));
           }}
         >
           <MdLightMode

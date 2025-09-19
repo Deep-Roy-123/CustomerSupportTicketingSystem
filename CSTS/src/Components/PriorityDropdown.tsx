@@ -5,7 +5,7 @@ interface PriorityDropdownProps {
   onChange: (value: string) => void;
   isAll?: boolean;
   className?: string;
-  darkMode:boolean;
+  darkMode: boolean;
 }
 const PriorityDropdown: React.FC<PriorityDropdownProps> = ({
   value,
@@ -28,7 +28,15 @@ const PriorityDropdown: React.FC<PriorityDropdownProps> = ({
         Select Priority
       </option>
       {options.map((opt) => (
-        <option key={opt} value={opt} className={`${(darkMode===true)?'text-gray-200 bg-gray-800':'text-gray-800 bg-gray-200'}`}>
+        <option
+          key={opt}
+          value={opt}
+          className={`${
+            darkMode === true
+              ? "text-gray-200 bg-gray-800"
+              : "text-gray-800 bg-gray-200"
+          }`}
+        >
           {opt}
         </option>
       ))}

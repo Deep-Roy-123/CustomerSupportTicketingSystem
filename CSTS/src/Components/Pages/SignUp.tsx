@@ -21,7 +21,9 @@ export const initUser = {
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
-  const theme:boolean=JSON.parse(localStorage.getItem("darkMode") ?? "false");
+  const theme: boolean = JSON.parse(
+    localStorage.getItem("darkMode") ?? "false"
+  );
   const [darkMode, setDarkMode] = useState(theme);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -65,7 +67,13 @@ const SignUp: React.FC = () => {
     });
 
   return (
-    <div className={`min-h-screen ${(darkMode===true)?'bg-gray-800 text-gray-200':'bg-gray-200 text-gray-800'}`}>
+    <div
+      className={`min-h-screen ${
+        darkMode === true
+          ? "bg-gray-800 text-gray-200"
+          : "bg-gray-200 text-gray-800"
+      }`}
+    >
       <div className="flex justify-between items-center px-5 md:px-15 lg:px-20 py-2 rounded-md  shadow-md shadow-gray-500">
         <h1 className="text-4xl font-bold">CSTS</h1>
         <button
@@ -96,7 +104,9 @@ const SignUp: React.FC = () => {
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`rounded-md outline-0 text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103 ${(darkMode===true)?'placeholder-gray-200':''}`}
+              className={`rounded-md outline-0 text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103 ${
+                darkMode === true ? "placeholder-gray-200" : ""
+              }`}
             />
             {errors.name && (
               <p className="text-red-500 text-[14px] font-normal">
@@ -115,7 +125,9 @@ const SignUp: React.FC = () => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`rounded-md outline-0 text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103 ${(darkMode===true)?'placeholder-gray-200':''}`}
+              className={`rounded-md outline-0 text-[20px] border-2 pl-2 h-[35px] md:h-[50px] focus:transition focus:scale-103 ${
+                darkMode === true ? "placeholder-gray-200" : ""
+              }`}
             />
             {errors.email && (
               <p className="text-red-500 text-[14px] font-normal">
@@ -134,7 +146,9 @@ const SignUp: React.FC = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`rounded-md outline-0 text-[20px] md:h-[50px] border-2 pl-2 focus:transition focus:scale-103 ${(darkMode===true)?'placeholder-gray-200':''}`}
+              className={`rounded-md outline-0 text-[20px] md:h-[50px] border-2 pl-2 focus:transition focus:scale-103 ${
+                darkMode === true ? "placeholder-gray-200" : ""
+              }`}
             />
             {errors.password && touched.password && (
               <p className="text-red-500 text-[14px] font-normal">
@@ -167,7 +181,7 @@ const SignUp: React.FC = () => {
         <button
           onClick={() => {
             setDarkMode(!darkMode);
-            localStorage.setItem("darkMode",JSON.stringify(!darkMode));
+            localStorage.setItem("darkMode", JSON.stringify(!darkMode));
           }}
         >
           <MdLightMode

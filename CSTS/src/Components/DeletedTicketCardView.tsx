@@ -1,15 +1,31 @@
 import React from "react";
 import type { Input } from "./CreateNewTicket";
-interface DeletedTicketCardViewProps{
-    deleteTicket: Input[];
-    handleViewDetails: (tdata: Input) => void;
-    darkMode:boolean;
+interface DeletedTicketCardViewProps {
+  deleteTicket: Input[];
+  handleViewDetails: (tdata: Input) => void;
+  darkMode: boolean;
 }
-const DeletedTicketCardView:React.FC<DeletedTicketCardViewProps> = ({deleteTicket, handleViewDetails, darkMode}) => {
+const DeletedTicketCardView: React.FC<DeletedTicketCardViewProps> = ({
+  deleteTicket,
+  handleViewDetails,
+  darkMode,
+}) => {
   return (
-    <div className={`min-w-[1100px] my-6 flex flex-wrap justify-evenly rounded-md ${(darkMode===true)?'bg-gray-800 shadow-md shadow-gray-500':'bg-gray-200 shadow-md shadow-gray-500'}`}>
+    <div
+      className={`min-w-[1100px] my-6 flex flex-wrap justify-evenly rounded-md ${
+        darkMode === true
+          ? "bg-gray-800 shadow-md shadow-gray-500"
+          : "bg-gray-200 shadow-md shadow-gray-500"
+      }`}
+    >
       {deleteTicket.map((tdata) => (
-        <div className={`rounded-md p-3 my-8 w-[320px] hover:transition hover:scale-105 mt-8 shadow-md shadow-gray-500 ${(darkMode===true)?'bg-gray-800 text-gray-200':'bg-gray-200 text-gray-800'}`}>
+        <div
+          className={`rounded-md p-3 my-8 w-[320px] hover:transition hover:scale-105 mt-8 shadow-md shadow-gray-500 ${
+            darkMode === true
+              ? "bg-gray-800 text-gray-200"
+              : "bg-gray-200 text-gray-800"
+          }`}
+        >
           <div className="flex flex-row justify-between">
             <p className="text-blue-500 font-medium mt-1">{tdata.id}</p>
             <p

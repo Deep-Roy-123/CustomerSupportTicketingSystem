@@ -27,9 +27,10 @@ const TicketList: React.FC = () => {
   const [view, setView] = useState(false);
   const [filterData, setFilterData] = useState<Input[]>([]);
 
-  const theme:boolean=JSON.parse(localStorage.getItem("darkMode") ?? "false");
+  const theme: boolean = JSON.parse(
+    localStorage.getItem("darkMode") ?? "false"
+  );
   const [darkMode, setDarkMode] = useState(theme);
-  
 
   useEffect(() => {
     const data: Input[] = JSON.parse(
@@ -119,14 +120,14 @@ const TicketList: React.FC = () => {
   return (
     <div
       className={`${
-        darkMode === true ? "bg-gray-800 text-gray-100" : "bg-gray-200 text-gray-800"
+        darkMode === true
+          ? "bg-gray-800 text-gray-100"
+          : "bg-gray-200 text-gray-800"
       }`}
     >
       <div className="min-h-screen">
         <div className="flex justify-between items-center px-4 md:px-15 lg:px-20 py-2 rounded-md shadow-md shadow-gray-500">
-          <h1 className="text-2xl md:text-4xl font-bold">
-            Ticket List
-          </h1>
+          <h1 className="text-2xl md:text-4xl font-bold">Ticket List</h1>
           <div className="flex flex-row gap-2 md:gap-3">
             <button
               className="rounded-md bg-blue-400 shadow-sm shadow-gray-500 h-[50px] px-3 hover:transition-all hover:bg-blue-700 hover:scale-103 hover:delay-300"
@@ -151,12 +152,14 @@ const TicketList: React.FC = () => {
           </div>
         </div>
         <div className="overflow-x-auto w-full mt-[30px] px-[50px]">
-          <StatusBar userId={userId} darkMode={darkMode}/>
+          <StatusBar userId={userId} darkMode={darkMode} />
           <div className="flex flex-row justify-evenly min-w-[1100px] w-full mt-5 rounded-md shadow-md shadow-gray-500 p-3">
             <div className="w-[230px] hover:transition hover:scale-103 hover:delay-300">
               <input
                 type="text"
-                className={`rounded-md  h-[40px] outline-0 pl-3 w-full border-2 ${(darkMode===true)?'placeholder-gray-200':''}`}
+                className={`rounded-md  h-[40px] outline-0 pl-3 w-full border-2 ${
+                  darkMode === true ? "placeholder-gray-200" : ""
+                }`}
                 placeholder="Enter Ticket Title"
                 value={filterSearch}
                 onChange={(e) => {
@@ -246,7 +249,7 @@ const TicketList: React.FC = () => {
         <button
           onClick={() => {
             setDarkMode(!darkMode);
-            localStorage.setItem("darkMode",JSON.stringify(!darkMode));
+            localStorage.setItem("darkMode", JSON.stringify(!darkMode));
           }}
         >
           <MdLightMode

@@ -8,7 +8,9 @@ import { MdLightMode } from "react-icons/md";
 
 const LogIn: React.FC = () => {
   const navigate = useNavigate();
-  const theme:boolean=JSON.parse(localStorage.getItem("darkMode") ?? "false");
+  const theme: boolean = JSON.parse(
+    localStorage.getItem("darkMode") ?? "false"
+  );
   const [darkMode, setDarkMode] = useState(theme);
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -47,7 +49,9 @@ const LogIn: React.FC = () => {
   return (
     <div
       className={` min-h-screen ${
-        darkMode === true ? "bg-gray-800 text-gray-100" : "bg-gray-200 text-gray-800"
+        darkMode === true
+          ? "bg-gray-800 text-gray-100"
+          : "bg-gray-200 text-gray-800"
       }`}
     >
       {/*header */}
@@ -137,7 +141,7 @@ const LogIn: React.FC = () => {
         <button
           onClick={() => {
             setDarkMode(!darkMode);
-            localStorage.setItem("darkMode",JSON.stringify(!darkMode));
+            localStorage.setItem("darkMode", JSON.stringify(!darkMode));
           }}
         >
           <MdLightMode

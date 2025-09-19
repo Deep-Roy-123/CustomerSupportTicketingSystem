@@ -11,7 +11,7 @@ interface ActiveTicketProps {
   ticketData: Input[];
   setTicketData: Dispatch<SetStateAction<Input[]>>;
   view: boolean;
-  darkMode:boolean;
+  darkMode: boolean;
 }
 
 const ActiveTicket: React.FC<ActiveTicketProps> = ({
@@ -24,8 +24,8 @@ const ActiveTicket: React.FC<ActiveTicketProps> = ({
   darkMode,
 }) => {
   return (
-    <div 
-    className={`${
+    <div
+      className={`${
         darkMode === true
           ? "bg-gray-800 text-gray-200 border-gray-200"
           : "bg-gray-200 text-gray-800 border-gray-800"
@@ -33,40 +33,54 @@ const ActiveTicket: React.FC<ActiveTicketProps> = ({
     >
       {view === false && (
         <table className="min-w-[1100px] w-full table-auto border-collapse mt-5 mb-10">
-          <thead className={`${
+          <thead
+            className={`${
               darkMode === true
                 ? "bg-gray-800 text-gray-200"
                 : "bg-gray-700 text-gray-200"
-            }`}>
+            }`}
+          >
             <tr>
-              <th className={`border-2 font-medium px-1 text-[20px] ${
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
                   darkMode === true ? "" : "border-gray-800"
-                }`}>
+                }`}
+              >
                 Id
               </th>
-              <th className={`border-2 font-medium px-1 text-[20px] ${
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
                   darkMode === true ? "" : "border-gray-800"
-                }`}>
+                }`}
+              >
                 Title
               </th>
-              <th className={`border-2 font-medium px-1 text-[20px] ${
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
                   darkMode === true ? "" : "border-gray-800"
-                }`}>
+                }`}
+              >
                 Priority
               </th>
-              <th className={`border-2 font-medium px-1 text-[20px] ${
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
                   darkMode === true ? "" : "border-gray-800"
-                }`}>
+                }`}
+              >
                 Status
               </th>
-              <th className={`border-2 font-medium px-1 text-[20px] ${
+              <th
+                className={`border-2 font-medium px-1 text-[20px] ${
                   darkMode === true ? "" : "border-gray-800"
-                }`}>
+                }`}
+              >
                 Created Date
               </th>
-              <th className={`border-2 font-medium px-2 text-[20px] ${
+              <th
+                className={`border-2 font-medium px-2 text-[20px] ${
                   darkMode === true ? "" : "border-gray-800"
-                }`}>
+                }`}
+              >
                 Action
               </th>
             </tr>
@@ -173,7 +187,14 @@ const ActiveTicket: React.FC<ActiveTicketProps> = ({
         </table>
       )}
       {view === true && (
-        <ActiveTicketCardView filterData={filterData} ticketData={ticketData} setTicketData={setTicketData} handleViewDetails={handleViewDetails} handleDelete={handleDelete} darkMode={darkMode}/>
+        <ActiveTicketCardView
+          filterData={filterData}
+          ticketData={ticketData}
+          setTicketData={setTicketData}
+          handleViewDetails={handleViewDetails}
+          handleDelete={handleDelete}
+          darkMode={darkMode}
+        />
       )}
     </div>
   );
